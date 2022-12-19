@@ -1,0 +1,491 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Markus js - Cheatsheet</title>
+</head>
+<body>
+    <h1>Cheatsheet</h1>
+	<p id="output_test">alle Cheatsheet Ausgaben sind in der Console >.<</p>
+    <script>
+	
+<!-- --------------------------------------------------------------------------------------- -->
+<!-- -------------------------------------- Javascript -------------------------------------- -->
+<!-- --------------------------------------------------------------------------------------- -->
+	//debugger; //ermoeglicht Debugger Anzeige in Entwicklertools(F12) in Sources
+
+	/* ----- Datentypen + Properties + Methods + Built-in Objects ----- */
+	//Datentypen: undefined, null, boolean, string, symbol, bigint, number, object
+	//jeder Datentyp / jedes Objekt hat eigene Properties und Methoden (= Funktionen in Objekten)
+		/* --- Variablen definieren --- */
+			var x = ""; //var ist veraltet, stattdessen let verwenden, variablen lassen sich ändern
+			let y = 0; //mit let lassen sich variablen danach aendern, ohne Wert deklarieren = undefined
+			const z = null; //mit constanten lassen sich variablen nicht mehr aendern, values in Objekten/Arrays sind änderbar, null = absence of Value, undefined = value does not exist
+			console.log(typeof(x)); //typeof Operator gibt den Datentyp aus
+		/* --- String Methoden --- */
+			let testString = "      Markus mit \" escape Character sowie \n newline und \t tab" + " weiterer tring"; //String, im String mit \ Escapen, + = String Concatenation
+			let testString2 = `per hochkommata(backticks) \` sowie ${y} lassen sich Variable in Strings einbinden sowie mehrzeilie (multiline) Strings` //Template Literals
+			testString.length; //String Datentyp mit .length Propertie
+			testString2[0].toUpperCase() + testString2.substring(1); //Nur ersten Buchstaben in Uppercase, substring(indexstart, indexend)
+			testString.slice(1,4); //slice(start, stop), wie substring
+			testString.trim(); //Remove Whitespace am Ende und Anfang einer Zeile
+			"test@live.de".split('@')[0]; //wird zu array = [0] = test, [1] = live.de
+			testString[testString.length - 1]; //letztes Zeichen eines Strings
+			testString.split("").reverse().join(""); //reverse - durch split zu array mit einzel elementen, mit reverse - array umdrehen, mit join array zu string
+			testString.repeat(4);
+			testString.indexOf("sowie"); //wenn kein Ergebnis gefunden wird = -1
+			console.log("testString: ", testString);
+			//Regex
+				let myString = "  <h1>Hello, World! <h2>Hello</h2> my friend!</h1>"; 
+				let myRegex = /Hello|hello/ig;  //| = oder, i,g = flag (groß/klein, mehrere Ergebnisse)
+				let myRegex2 = /l+/ig; //Ergebnis: ["ll", "l", "ll"], + = character gibt es 1 oder mehrmal, /l{2,4}/ = nur wenn l zwischen 2-4 mal vorhanden ist
+				let myRegex3 = /^<h.*?>/g; //greedy vs lazy Matching, lazy= mit ?, ? kann auch als optionale eingesetzt werden, * = findet 0 oder mehr Character vom Punkt, . Punkt = 1 Wildcard, .* = Wildcard für alles
+				let myRegex4 = /[aeiou]$/g; //findet alles außer aeiou, mit 1-7 können gruppen angegeben werden, $ sucht nur am Ende des Strings also ">"
+				let myRegex5 = /\w/g; //shorthand character class für alle Buchstaben, Zahlen + _, \W ist das Gegenteil (Sonderzeichen), \d sind Zahlen, \s ist Whitespace
+				let myRegex6 = /^[a-z][a-z]+\d*$/i; //^[a-z] erster char ist Buchstabe (^ sucht nur zu beginn), [a-z]+ folgende Chars sind auch Buchstaben, \d*$ Input endet mit 0 oder mehr Zahlen
+				let myRegex7 = /(?=\w{5,})(?=\w*\d{2})/; //prüft auf mind. 5 Char und mind. 2 Zahlen ?=... positive Lookahead, ?!... negative Lookahead -> prüft ob es das Suchergebnis gibt/nicht gibt, matched es aber nicht, () = Grouping
+				let myRegex8 = /(Hello).*(World)/; myString.replace(myRegex8, "$2 $1") //Capture Groups später (z.B. in Replace) mit $1 .. einsetzen
+				let myRegex9 = /^(\s+)| \1+ $/g;  //entfernt alle Whitespaces, Capture Group mit \1 erneut verwenden
+				let result = myRegex.test(myString); console.log("regextest", result); //.test returned true/false, 
+				let result2 = myString.match(myRegex4); console.log("regexmatch", result2); //returned die Suche als Array
+				let result3 = myString.replace(myRegex9, ""); console.log("regexreplace", result3); //mit Replace, per Regex Strings ändern
+		/* --- Integer Methoden --- */
+			x = 5.23 + 3; const numberArr = [1,12,3]; //Number 
+			x++; //x + 1
+			Math.max(...numberArr); //höchste Zahl aus Array, mit Spread Syntax
+			const numberParse = +"100"; const numberParse2 = parseInt("100"); //Kurzform
+			Math.floor(Math.random()*100); //Object Math mit Methode random()
+			Number.isInteger(123);
+		/* --- Bool Methoden --- */
+			const testBool = true; //bei Pruefung ergibt false wenn Value = 0, "", null, undefined, NaN
+			const testBool2 = Boolean(x); //Boolean, wenn es einen Wert in x gibt ist es true, Variable ohne const ist im Scope lokal, mit const/let ist global
+			console.log("bool", Boolean(null));
+		/* --- Symbol Methoden --- */
+			x = Symbol("id"); //Symbol
+		/* --- Array Methoden --- */
+			const testArray = ["testarray 0", "testarray 1", "testarray 2"]; //Array, wenn Array an Funktion mit mehreren Argumenten uerbgeben werden soll Spread Syntax: ...testArray
+			const testArray2 = [...testArray]; testArray.concat(testArray2); testArray2=testArray.slice(); //Array kopieren
+			const zugriff = testArray[0];
+			const [a, b] = testArray; //Destructuring von Arrays, a="testarray 0", b="testarray 1"
+			const [destructA=5, destructB=5, destructC=5] = [0, 1]; //destructA = 0, destructB = 1, destructC = 5 => destrukturierende Zuweisung, Daten aus Arrays der Reihe nach extrahieren
+			const nestedObjectArray = [{color: "blue", cost:1000}, {color: "green", cost:500}, {color: "blue", cost: 200}]; //Zugriff: nestedObjectArray[0].color
+			const testArray3 = nestedObjectArray.reduce((obj, element) => {obj[element.color] = element.cost; return obj}); //reduce(accumulator, element, index, calledArray) accumulator = wert vom letzten return
+			const testArray4 = nestedObjectArray.reduce((data, {color: innercolor, cost: innercost}) => {if (innercolor === "blue") {data.count++; data.sum += Number(innercost);} return data;}, {sum:0, count:0}); console.log("Average Cost", testArray4.sum / testArray4.count);
+			console.log("testArray4", testArray4);
+			nestedObjectArray.find(x => x.color === "green"); //findet nach Objekte Werte in Arrays
+			testArray.push("ganz hinten");testArray.unshift("ganz vorne");  //added ganze vorne / ganz hinten
+			testArray.pop(); testArray.shift() //removed + return letztes/erstes Element
+			testArray.splice(1, 1, "testarray 1 neu"); //splice(startindex, anzahl) = removed die angegeben werte, splice(startindex, anzahl, neuesitem1, neuesitem2) = removed + added neue werte
+			testArray.slice(0, 3); //slice(startindex, endindex), Wert wird extrahiert und returned, arrneu=arr.slice() ist eine kopie
+			testArray.indexOf("testarray 2"); //wenn kein index gefunden wird = -1
+			testArray.forEach(element => console.log("for each in testArray: " + element)); //Iterator Methode fuer Arrays, geht jedes Element durch
+			testArray.map(element => {return "neues " + element}); //geht wie forEach jedes Element durch und erstellt ein neues Array, mit testArray.map((row, index, objekt) => {} koennen mehr Informationen rausgeholt werden
+			testArray.filter(element => {return !element.includes("1")}); //wie map() nur dass man bestimmte Werte rausfiltern kann
+			testArray.findIndex(element => {return element.charAt(0)==="t"}); //findet das erste element in einem array dass einer bedingung entspricht, wenn nichts gefunden ist die ausgabe -1
+			testArray.sort((a,b) => a-b); //sortiert lowest to highest, sort(callback)
+			testArray.sort(function(a,b) {return a === b ? 0 : a < b ? -1 : 1}); //alphabetisch sortieren
+			testArray.every((element, index, array) => typeof(element) === "string"); //testet alle Elemente des Arrays auf gegebene Funktion und returned true/false
+			console.log("testArray", testArray);
+		/* --- Objekt Methoden --- */
+			const testObject = {_type:"Fiat", _color:"white", engineNoise() {console.log("brumm")}, get Type () {return this._type}, set Type(str){this._type = str},}; //Object, Arrow Functions in Objekten binden den this Befehl an die Funktion, property names = keys
+			const zugriff2 = testObject["_type"] || testObject._type ; //2 möglichkeiten um auf objekte zuzugreifen
+			const {_type, _color} = testObject; //per Destructuring Assignment einen Wert aus einem Object extrahieren = const color = testObject.color
+			delete testObject._color; //Propertys von Objekten entfernen
+			testObject.Type = "BMW"; //eigenen Object Setter verwenden
+			console.log(testObject.Type); //eigenen Object Getter verwenden
+			Object.keys(testObject); //gibt alle Keys von einem Objekt in ein Array aus
+			Object.entries(testObject); //gibt alle Key-Value Paare in einzelnen Arrays aus
+			Object.values(testObject); //returned alle values
+			testObject.hasOwnProperty(_color); //true/false wenn es das jew. prop gibt
+			
+		
+		
+	/* ----- Statements, Loops, Arrays ----- */
+	//Vergleiche mit: <,>, <=, >=, ===, !==, &&, ||
+		if (testBool) {console.log('statement 1')} else if (testBool) {'statement 2'} else {'statement 3'}
+		switch (testArray) {case true: console.log('true'); break; case "Markus": console.log("Markus"); break; default: console.log("Default"); break;}
+		for (let counter=0; counter<testArray.length; counter++) {console.log(testArray[counter])};let counter = 0;
+		for (let index in testObject) {console.log("for index in testObject: " + testObject[index])}; //Objekte/Arrays durchlaufen
+		while (counter < 5) {console.log("while: " + counter); counter++;} //laeuft nur wenn die Bedingung erfuellt ist
+		do {console.log("do while"); break} while (0<1); //laeuft auf jeden Fall einmal durch
+		
+
+
+	/* ----- Kurzschreibweisen / Shorthand Techniques ----- */
+		testBool ? console.log('statement 1 wenn testbool true') : console.log('statement 3 wenn testbool false'); //Ternary Operator = if/else in Kurzschreibweise
+		const nco = undefined ?? "Default"; //Nullish Coalescing Operator, wenn der Wert links von den ?? undefined oder null ist wird die Default Value von rechts verwendet
+		const lncafunc = (var1, var2) => {var2 ??= "default value"; return var1 + var2;}; console.log(lncafunc("leer ",)); //Logical nullish assignment, default value setzen
+		let sce = "" || "Default"; //Short-Circuit Evaluation, wenn der Wert links von || undefined, null, "", 0 oder false ist wird der Default Value von rechts verwendet
+		let test = null || undefined || "Value";console.log("kaskade: " + test); //Short-Circuit Evaluation als Kaskade;
+		for (let i of testArray) {console.log("Kurzschreibweise for mit of: " + i)}; for (let i in testArray) {console.log("Kurzschreibweise for mit in: " + i)};
+		void(0) || null || return false //do nothing
+
+
+	/* ----- Funktionen ---- */
+		//wenn function an andere Funktion uebergeben wird = callback
+		//function die als variable zugewiesen werden kann = first class (alles in js)
+		//wenn function eine andere braucht = higher-order function
+		//wenn function als Argument weiter / returned wird = lambda
+		//Änderungen = mutation
+		function greetings(name="User") {console.log("Hello " + name + "!");} greetings("Markus");
+		function restPara(...args) {return args.length}; console.log("restPara", restPara(0, "eins", [2, 3])); //Rest Parameter, nimmt eine variable Anzahl von Argumenten an
+		(function () {console.log("IIFE")})(); //Immediately Invoked Function Expression - Anonyme Function, wird direkt ausgeführt
+		const functionExpression = function(x) {console.log(x)};
+		const arrowFunction = (width=3, height=4) => {let area=width*height; return area;}; //mit Default Values / Optional Parameter
+		const arrowFunction2 = day => day === "Monday" ? true:false; //Concise body
+		const arrowFunction3 = () => {};
+		const arrowFunction4 = uebergabe => uebergabe + uebergabe; //return ist hier schon inkludiert
+		const arrowFunction5 = uebergabe => (uebergabe + "mehr"); //Implicit Return, return ist inkludiert
+		const arrowFunction6 = ({name, age, location}) => {} //Destructuring Assignment um Objekte als Funktion Parameter zu übergeben
+
+
+
+	/* ----- Klassen ---- */
+		//properties, methods, prototype = shared zwischen allen Instanzen
+		//SpaceShuttle = supertype für zeus, zeus = subtype, Object = supertype für SpaceShuttle und zeus
+		var SpaceShuttle = function(targetPlanet) {this.targetPlanet = targetPlanet;}; //ES5, 
+		var zeus = new SpaceShuttle("Jupiter"); //"new" refered zu "this"
+		var zeus2 = Object.create(SpaceShuttle.prototype); //verwenden wenn inheritated werden soll, wenn es runtergebeben werden soll SpaceShuttle.prototype = Object.create(factory.prototype), SpaceShuttle.prototype.constructor = SpaceShuttle
+		SpaceShuttle.prototype.speed = 300; SpaceShuttle.prototype = {constructor: SpaceShuttle, weapons: 3, shoot: function() {console.log("pow pow pow");}}; //wird zwischen allen SpaceShuttle Instanzen geteilt ohne dass es bei jeder Instanz als Duplikat angelegt wird
+		zeus.hasOwnProperty("speed"); //wäre false weil es ein Prototype ist, zählt aber als prop
+		zeus instanceof SpaceShuttle; console.log(zeus); //return false/true
+		SpaceShuttle.prototype.isPrototypeOf(zeus); //return false, weil die prototypes erst danach definiert wurden, besitzt aber die prototypes
+		class SpaceShuttle2 {constructor(targetPlanet) {this.targetPlanet = targetPlanet} get x() {return this.xy} set y(yz){this.x=yz}} const zeus3 = new SpaceShuttle2("Jupiter"); //ES6, class = new function mit constructor
+		let flyMixin = function(obj) {obj.fly = function() {console.log("Flying, wooosh!")}}; let bird = {name: "albert"}; flyMixin(bird); bird.fly(); //Mixin = commone verhalten zwischen unabhängigen Objekten
+
+
+	/* ----- Hilfreiches Zeug ---- */
+		//HTML Dokumente beschreiben
+			document.write("document.write"); //ist veraltet und sollte nicht mehr verwendet werden, schreibt an die aktuelle Stelle im Dokument
+			document.getElementById('output_test').innerHTML = 'innerHTML'; //innerHTML = goto, wird an eine ID angehängt
+			output_test.innerHTML = "output_test2"; //innerHTML direkt id ansprechen
+			document.body.insertBefore(document.createElement('div').appendChild(document.createTextNode('insertBefore + createElement')), output_test); //ggf. Performance decrease, schreibt vor das angegebene Element
+			output_test.insertAdjacentHTML('afterend', '<div>insertAdjacentHTML</div>'); //afterend = unter das angebene Element , beforeend = letztes Kind im aktuellen Element, beforebegin, afterbegin
+			document.currentScript.insertAdjacentHTML('afterend', '<h6>insertAdjacentHTML mit current Script</h6>'); //kann mit document.currentScript als Element kombiniert werden
+		//Module
+			//Module erlauben "import" und "export" features, müssen so intiert werden:
+			//<script type="module" src="filename.js"></ script>
+			//export const add = (x,y) => x+y; export {add}; export default function def() //2 Möglichkeiten zum exportieren, default = wenn nur eine Funktion exportiert wird, kann nicht mi var, let und const benutzt werden
+			//import {add} from './add.js'; import * as math from './add.js'; import def from './add.js' //wobei ./ für den aktuellen Ordner steht, default wird ohne Klammern importiert
+		//Promise
+			//meistens asynchron, wenn es eine unbestimmte Zeit lang dauert -> z.B. Server Requests
+			//hat 3 States: pending, fullfilled, rejected, wenn weder resolve/reject ausgeführt wird ist der State für immer pending
+			const myPromise = new Promise((resolve, reject) => {true ? resolve('Promise fullfilled') : reject('Promise rejected')});
+			myPromise.catch(error => {console.log("Promise failed: " + error)}); //error = kommt von reject, wird ausgeführt wenn Promise failed
+			myPromise.then(result => {console.log("Promise fertig: " + result)}).catch(err => err); //result = kommt von resolve, wird ausgeführt wenn Promise erfüllt ist, wenn kein .catch angehängt ist => Fehlermeldung		
+		//async
+			function asyncTest() {return new Promise(resolve => {setTimeout(() => resolve('2 sec später..'), 2000)})};
+			async function asyncCall() {console.log("async läuft.."); console.log(await asyncTest());}; asyncCall(); //return: Promise
+			const asyncArrow = async () => {console.log(await new Promise(resolve => {setTimeout(() => resolve('4 sec später..'),4000)}))}; asyncArrow();
+			setTimeout(() => {console.log("6 sec später..")}, 6000);
+			function pullforSure() {if (true) {} else {setTimeout(pullforSure, 300)}}; //in 300ms nochmal probieren wenn es fehlgeschlagen ist, ggf. clearTimeout() verwenden
+
+
+
+
+<!-- --------------------------------------------------------------------------------------- -->
+<!-- -------------------------------------- Typescript -------------------------------------- -->
+<!-- --------------------------------------------------------------------------------------- -->
+
+	//codecademy commands: tsc, ls, node index.js
+
+	/* ----- Datentypen ----- */
+		//boolean, number, array, tuple, enum, unknown, void, never, object null, string, undefined, any
+		//prueft wie eine Variable initert wurde und erlaubt dann nur noch diesen Datentyp inkl. deren Methoden, außer die variable wurde als any / leer initiert
+			//let mustBeAString : string; //Variable Type Annotations moeglich
+		//Interface Datentypen: string, number, Shape, {name: string, age: number}, [index: number]: string, any, unknown, boolean, Type, string[], [string, number]
+	 
+	 /* ----- tsconfig.json ----- */
+		 //liegt im root Verzeichnis, Beispieldatei: es2017 = EmmaScript 2017 Standard, ermöglicht die CMD "tsc"
+			//	{
+			//	  "compilerOptions": {
+			//	    "target": "es2017",
+			//	    "module": "commonjs",
+			//	    "strictNullChecks": true
+			//	  },
+			//	  "include": ["**/*.ts"]
+			//	}
+
+	/* ----- Error: undefined is not assignable ----- */
+		//const name: string = variable.name!; //exlamation mark = non-null assertion operator -> sagt typescript dass es nicht null/undefined wird
+		//const name: string = variable.name ?? ""; //mit Nullish Coalescing Operator den rechten Wert nehmen wenn links null/undefined ist
+		//possiblyundefined && possiblyundefined //mit logischen Und nur den rechten Wert nehmen wenn linker Wert weder undefinde noch null ist
+	 
+<!-- --------------------------------------------------------------------------------------- -->
+<!-- -------------------------------------- React -------------------------------------- -->
+<!-- --------------------------------------------------------------------------------------- -->
+
+	/* ---- JSX ----
+	-------- Allgemeines --------
+		JSX = eine Erweiterung zu js, wird kompiliert und kann ueberall verwendet werden
+		hat Attribute wie bei HTML Elementen, mit <h1 Attribut=''></h1>
+		wenn jsx Expression groesser als 1 Zeile ist muss die Expression in Klammern, z.B.: const h1 = (<h1>Hello world</h1>)
+		muss 1 Element haben dass alle anderen umfasst (z.B. keine zwei Divs untereinander)
+		statt CSS class muss className verwendet werden (wird als class gerendert)
+		mit {} kann javascript in jsx verwendet werden
+			- bei <h1 style={{color:'red'}}></h1> wird erst angegeben dass es sich um js handelt und danach das es um ein js object literal geht
+		Kein if in JSX möglich
+	
+	
+	-------- Ausgabe--------
+		Render = ReactDOM.render(<h1></h1>, document.getElementById('app');
+			- <h1> = das erste Argument in jsx (kann auch variable/function sein)
+			- getElement = das zweite Argument, wo das HTML im HTML Document angehaengt werden soll, es muss im HTML eine ID mit dem Namen "app" geben
+			- wenn 2x derselbe Render aufgerufen wird, wird das DOM element geupdated nicht angehaengt
+		<ul>{age > 15 && <li>Brussels Sprouts</li>}</ul> //wenn True dann wird der rechte Wert gerendert sonst nicht
+		const listItems = ['Home', 'Shop', 'About Me'].map((item, i) => <li key={i}>{item}</li>);
+
+		ohne JSX: const greatestDivEver = <div>i am div</div>; => const greatestDivEver = React.createElement("div", null, "i am div");
+	
+	
+	-------- Event Listener --------
+		sind Attribute in JSX Elementen und beginnen immer mit onTypeofEvent = Function-Attribut-Value
+		Attribut Value ist immer eine Function
+		Eine Liste gibt es hier: https://reactjs.org/docs/events.html#supported-events
+		onClick
+		*/
+
+
+	/* ---- Komponenten ----
+	-------- Class Komponenten --------
+		Deklaration: //Name muss mit grossen Buchstaben beginnen, muss render Methode enthalten, render muss return enthalten
+			class Xxx extends React.Component {
+				constructor(props){super(props);this.state = {date: new Date()}} //states sind nur intern, hier werden inital values definiert
+				myFunction() {this.setState({date: 25})}
+				render() {const xxx = 'xxx'; return(<h1>xxx {this.myFunction} {this.props.prop1}/h1>);}};
+		Verwendung: <Xxx prop1="" prop2={2} prop3={[]}/>; //es koennen props uebergeben werden, props NIE innerhalb der Klasse ändern
+		Ausgabe: ReactDOM.render(<Xxx prop1="" />, document.getElementById('app'));
+		andere Klassen verwenden: import {AndereKlasse} from './AndereKlasse.js' //in {} wenn es sich um named exports handelt
+		named export = export steht vor der Deklaration z.b. einer Variablen: export const xxx
+		this.props.children = alles was zwischen openingn und end Tag steht z.B. <ClassKomp>Children</ClassKomp>, werden in Array ausgegeben
+		Xxx.defaultProps = { text: 'yo' };
+		this.setState() => callt automatisch .render()
+	
+	
+	-------- Function Komponenten --------
+		Deklaration: const Xxx = (props) => {return <h1>{props.prop1}</h1>}; //muessen jsx returnen
+		Verwendung: wie Class Komponente
+		Ausgabe: wie Class Komponente
+		Hooks:
+			- import {useState} from 'react'; const [currentValue, SetNewValue] = useState(["id":x]); //damit kann man dynamisch einer Variablen einen Wert zuweisen
+				- SetNewValue((prev) => ({...prev, id: Date.now()})); //damit ändert man das currentValue auf den Value von vorher + das aktuelle Datum als ID
+			- import {useEffect} from 'react'; const //useEffect wird bei jedem Render ausgeführt = wenn komponente hinzugefügt wird, wenn sich state/props ändern, wenn die komponente entfernt wird
+				- useEffect(() => {document.title = `${name} Uebungsplatz`},[name]); //immer wenn sich beim State name was ändert wird der Effekt ausgeführt
+				- useEffect(() => {alert("component rendered for the first time");return () => {alert("component is being removed from the DOM");};}, []); //Leeres Dependency Array als 2. Argument übergeben, damit Effekt nur beim ersten Render ausgeführt wird
+	
+	
+	-------- PropTypes --------
+		import PropTypes from 'prop-types'; //Value von PropTypes = Object
+		//name = erwartetes prop, value= erwarteter Datentyp
+		Klasse.propTypes = {message: PropTypes.string}; //bei Klassen
+		FunctionComponent.propTypes = {message: PropTypes.string.isRequired} //bei Function Components
+	
+	
+	-------- Lifecycle --------
+		side effects = z.B. loading external Data with AJAX, manual DOM tweaking, global values, State Updates auf unmounted components... (alles was Bugs verursacht)
+		Mounting = no side effects (constructor(), render()), allowed side effects (React updates DOM and refs, componentDidMount())
+		Updating = no side effects (New props, setState(), forceUpdate(), render()), allowed side effects (React updates DOM and refs, componentDidUpdate())
+		Unmounting = allowed side effects (componentWillUnmount())
+	*/
+
+    </script> 
+
+<!-- --------------------------------------------------------------------------------------- -->
+<!-- -------------------------------------- CSS -------------------------------------- -->
+<!-- --------------------------------------------------------------------------------------- -->
+	<style>
+	/* https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_Selectors#combinators */
+		.a .b {} /* wählt alle .b die in einem .a sind */
+		.a + .b {} /* wählt alle .b welche direkt nach einem .a kommen und beide die selben Eltern haben*/
+		.a ~ .b {} /* wählt alle .b welche nach .a kommen, und selben Eltern haben*/
+		.a > .b {} /* wählt nur die .b Elemente die nach .a kommen und beide die selben Eltern haben*/
+		.a || .b {} /* in Tabelle: wählt alle .b Elemente, welche .a Spalten matchen*/
+
+	/* Form Styling
+		padding (übersichtlichter und schöner wenn Text innen nicht direkt an Border klebt)
+		margin (damit nicht alles aneinanderpappt)
+		border (Standard ist 2px solid internal-light-dark, z.B. nur Bottom Border verwenden)
+		box-shadow (statt Border,box-shadow: offset-x offset-y blur-radius spread-radius color)
+		border-radius (Kanten abrunden, kann mit box-shadow benutzt werden)
+		width (auto, max-content, min-content, fit-content)
+		Font (font-weight)
+		Pseudoklassen (:required, :valid / :invalid, :checked, :hover, :focus, :active)
+	*/
+
+	</style>
+<!-- --------------------------------------------------------------------------------------- -->
+<!-- -------------------------------------- Testzeugs -------------------------------------- -->
+<!-- --------------------------------------------------------------------------------------- -->
+
+	<h1>Ab hier kein Cheatsheet sondern Testzeugs</h1>
+	<p id="output1"></p>
+	<div id="div1">The text above has been created dynamically.</div>
+
+	<script>
+		//document.body.onload = function();
+		
+		document.write(Date());
+		
+		document.getElementById('output1').innerHTML = 'Some text!';
+		
+		const testCreate = document.createElement('div');
+		testCreate.appendChild(document.createTextNode('Hello, Darkness my old friend '));
+		document.body.insertBefore(testCreate, div1);
+
+
+		function myFunction(x, y, z) {return x+y+z}
+		var args = [0, 1, 2];
+		var args2 = [3, 4, 5];
+		console.log("...args: ", myFunction(...args));
+
+		const domains = [{"code": "DEMOORACLE","isDefault": false},{"code": "DEV","isDefault": true},{"code": "AIL","isDefault": false},{"code": "PSLEASING","isDefault": false},{"code": "XLEASING","isDefault": false},{"code": "SKE","isDefault": false},{"code": "GSLEASE","isDefault": false},{"code": "MASTER","isDefault": false},{"code": "BRODSCHRANGEN","isDefault": false}];
+		const testDaten2 = [{"id": "name","title": "Name","type": "string","editable": false,"format": null,"searchable": true},{"id": "vorname","title": "Vorname","type": "string","editable": false,"format": null,"searchable": true},{"id": "zusatz","title": "Zusatz","type": "string","editable": false,"format": null,"searchable": true},{"id": "geburtsdatum","title": "Geburtsdatum","type": "date","editable": false,"format": null,"searchable": true},{"id": "rechtsform","title": "Rechtsform","type": "string","editable": false,"format": null,"searchable": true},{"id": "status","title": "Status","type": "string","editable": true,"format": null,"searchable": true}];
+		const userGroupsAvailable=[{title:"Clearing",code:"clearing"},{title:"Systemeinstellungen - keine Zuordnung w\xe4hlen",code:"<<eingeben"},{title:"Konditionenpfleger",code:"kondpf"},{title:"Buchhaltung",code:"buchhaltung"},{title:"Sachbearbeiter",code:"sb"},{title:"Unterschriftsberechtigung",code:"unterschriftsberechtigung"},{title:"Administrator",code:"admin"},{title:"Navigation_myLeasOne",code:"nav_leasone"},{title:"Kontrolle",code:"kontrolleur"},{title:"Navigation_Admin",code:"nav_admin"},{title:"Navigation_all",code:"nav_all"},{title:"Hilfeerfassung",code:"hilfetexte"},{title:"Betreuer",code:"betreuer"},{title:"Delegieren an",code:"delegieren"},{title:"Alle Ausf\xfchrungsrechte",code:"alle_acl_actions"},{title:"POS Benutzergruppe Team 1",code:"bestandstrennung"},{title:"Stellvertreter Sachbearbeiter",code:"stellvertreter"},{title:"POS Benutzergruppe Team 2",code:"bestandstrennung"},{title:"POS Benutzergruppe Partner Team 1",code:"bestandstrennung_partner"},{title:"Votum",code:"votum"},{title:"Entscheidung",code:"entscheidung"},{title:"POS Benutzergruppe Partner Team 2",code:"bestandstrennung_partner"},{title:"Navi_Trash",code:"Navi_Trash"},{title:"Navi_Sales",code:"Navi_Sales"},{title:"Navi_Kredit",code:"Navi_Kredit"},{title:"Navi_Backoffice",code:"Navi_Backoffice"},{title:"Navi_Buchhaltung",code:"Navi_Buchhaltung"},{title:"Navi_Jobs",code:"Navi_Jobs"},{title:"Vertragsverwaltung Prozesse",code:"verwaltung"},{title:"Rating_Vertrieb",code:"rating_vertrieb"},{title:"Rating_Kredit",code:"rating_kredit"},{title:"Nav_Favoriten",code:"nav_favoriten"},{title:"Einstellungen",code:"einstellungen"},{title:"Navi_Finanzierungen",code:"Navi_Finanzierungen"},{title:"Nutzer POS Gruppe 1",code:"hd"},{title:"CleanDesk",code:"cd"},{title:"Kalkulator",code:"kalkulator"},{title:"Navigation_myLeasTwo",code:"myleastwo"},{title:"Clearing stornieren",code:"clearing_storno"},{title:"Berechtigung Leasingvertrag",code:"berechtigung_leasingvertrag"},{title:null,code:null},{title:null,code:null},{title:null,code:null},{title:null,code:null},{title:null,code:null},{title:null,code:null},{title:null,code:null}] 
+
+		let value = "";
+		//Code aus groupsAvailable muss als titel angezeigt werden, titel+code stehen in userGroupsAvailable
+
+		console.log("find - ", (userGroupsAvailable.find(e => e.code === value))?.title);
+
+
+		const zusKontakt = [{KontaktDaten: "", KontaktTyp: ""}];
+
+
+		console.log("++++++++++++++++++")
+		console.log(Boolean(domains.find(domain => domain.isDefault === true)) ? domains.find(domain => domain.isDefault === true).code : "");
+		console.log(testDaten2);
+
+		const testDaten2map = testDaten2.map((a, b, c, d) => {
+			console.log("a : ", a); //row
+			//console.log("b : ", b); //index
+			//console.log("c : ", c); //object
+			//console.log("d : ", d); //undefined
+			document.write("<div>hehe</div>");
+		});
+
+		zusKontakt.push({KontaktDaten: "", KontaktTyp: ""});
+		zusKontakt.push({KontaktDaten: "", KontaktTyp: ""});
+		zusKontakt.push({KontaktDaten: "", KontaktTyp: ""});
+
+		console.log("zusKontakt");
+		console.log(zusKontakt);
+		console.log(zusKontakt[0]);
+
+		console.log(Math.floor(Math.random() * (10000)));
+
+		const title = "Markus Schiller";
+
+		const vorname = title.substring(0, title.indexOf(" "));
+		const nachname = title.substring(title.indexOf(" ")+1);
+		console.log(vorname);
+		console.log(nachname);
+
+		const userGroups = [];
+
+		userGroupsAvailable.map((element) => {
+			userGroups.push(element.code);
+		})
+
+
+		const value2 = "as";
+		console.log("value2 - ", value2 !== "")
+
+
+	</script>
+	
+
+	<style>
+		h1 { 
+			color: green; 
+			border-left: 
+			3px solid green; 
+		}
+
+		#myForm *, *:before, *:after {
+			box-sizing: border-box;  
+		}
+
+		#myForm {
+			padding: 8px;
+			background-color: lightgrey;
+			width: 400px;
+		}
+
+		#myForm input {
+			width: 50%;
+			padding: 0.5em;
+			border: 1px solid black;
+			border-radius: 5px;
+		}
+
+		#myForm label {
+			width: 20%;
+			display: inline-block;
+		}
+
+		#myForm input[type=submit] {
+			width: 100%;
+		}
+
+		.myForm {
+			font-family: sans-serif;
+		    padding: 8px;
+		    font-size: 16px;
+		    background-color: #FFFFFF;
+		    color: #000000;
+		    border-bottom: 1px;
+		    border-style: solid;
+		    border-radius: 5px;
+		    border-width: 1px;
+		    border-color: lightgrey;
+		    box-shadow: 0px 0px 0px rgba(66,66,66,.40);
+		    text-shadow: 0px 0px 0px rgba(66,66,66,.75);
+		    font-style: italic;
+		    box-sizing: border-box;
+		    letter-spacing: 2px;
+		    width: 25%;
+		}
+
+		.myForm option:focus{
+			color: green;
+		}
+	</style>
+
+	<div>
+		<h1> Formular Styling</h1>
+		<form action="#" id="myForm" method="POST">
+		<p>
+			<label for="Username">Username</label>
+			<input type="text" name="Username" placeholder="Username" />
+		</p>
+		<p>
+			<label for="E-Mail">Mail</label>
+			<input type="mail" name="E-Mail" placeholder="E-Mail" />
+		</p>
+		<p>
+			<label for="Password">Password</label>
+			<input type="password" name="Password" placeholder="Password" />
+		</p>
+		<p>
+			<input type="submit" value="Submit" />
+		</p>
+		</form>
+	</div>
+	
+	<div>
+		<div>
+			<h1>Ein <abbr title="Cascading Style Sheets">CSS</abbr>-Beispiel</h1>
+			<p>das CSS abbr erbt nur die Farbe und nicht den Border..</p>
+		</div>
+	</div>
+
+
+	<select id="teilnehmer" multiple="" name="teilnehmer" required="" size="5" class="myForm">
+		<option value="papierkorp">papierkorp</option>
+		<option value="test1">test1</option>
+		<option value="test2">test2</option>
+		<option value="test3">test3</option>
+		<option value="test4">test4</option>
+	</select>
+
+</body>
+</html>

@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>HIIT Timer</title>
+</head>
+<body>
+    <h1>HIIT Timer</h1>
+    <p>mal schauen was geht</p>
+    <div id="control">
+        <div>
+            <input type="button" value="Start" onClick="startThisShit()"/>
+            <input type="button" value="Pause" />
+            <input type="button" value="Stop" />
+        </div>
+    </div>
+    <div id="output">
+        <hr id="output_hr1">
+        <hr id="output_hr2">
+    </div>
+
+    <script>
+        const timerArray = [];
+
+        const doSomething = (e) => {
+            const option = document.getElementById("options").value;
+            const val = document.getElementById("value").value;
+
+            if (option === "title") 
+            {
+                output_hr2.insertAdjacentHTML("beforebegin","<div><h1>" + val + "</h1></div>");
+            }
+
+            if (option === "time") 
+            {
+                output_hr2.insertAdjacentHTML("beforebegin","<div>Timer in sek: " + val + "</div>");
+                timerArray.push(val);
+            }
+
+            if (option === "repeat") 
+            {
+                output_hr2.insertAdjacentHTML("beforebegin","<div>" + val + "x Wiederholen</div>");
+            }
+        }
+
+        
+
+        
+        const startThisShit = () => {
+
+            timerArray.forEach((element) => {
+                let start = element;
+
+                console.log(element);
+
+                const myTimer = () => {
+                    output.innerHTML = start;
+                    start--;
+                    if (start < 0) {clearInterval(myInterval);}
+                }
+
+                const myInterval = setInterval(myTimer, 1000);
+            });
+
+        }
+
+    </script>
+
+    <h1>Idee</h1>
+    <div>
+        <h2>toDo</h2>
+        <ul>
+            <li>Bezeichnung</li>
+            <li>Zeit in Sek/Min</li>
+            <li>Repeat
+                <ul>
+                    <li>die letzten x commands y times</li>
+                    <li>alles y times</li>
+                </ul>
+            </li>
+            <li>Farbe</li>
+            <li>Countdown Sound</li>
+            <li>Bezeichnung vor Timer</li>
+        </ul>
+
+        <h2>Auswahl</h2>
+
+        <select name="options" id="options">
+            <option value="title">Bezeichnung</option>
+            <option value="time">Zeit in Sek</option>
+            <option value="repeat">Wiederholen</option>
+        </select>
+        <input type="text" placeholder="Eingabe.." name="value" id="value" />
+        <input type="button" value="+" onClick="doSomething()" />
+    </div>
+</body>
