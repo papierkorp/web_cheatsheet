@@ -14,8 +14,8 @@
 	//debugger; //ermoeglicht Debugger Anzeige in Entwicklertools(F12) in Sources
 
 	/* ----- Datentypen + Properties + Methods + Built-in Objects ----- */
-	//Datentypen: undefined, null, boolean, string, symbol, bigint, number, object
-	//jeder Datentyp / jedes Objekt hat eigene Properties und Methoden (= Funktionen in Objekten)
+		//Datentypen: undefined, null, boolean, string, symbol, bigint, number, object
+		//jeder Datentyp / jedes Objekt hat eigene Properties und Methoden (= Funktionen in Objekten)
 		/* --- Variablen definieren --- */
 			var x = ""; //var ist veraltet, stattdessen let verwenden, variablen lassen sich ändern
 			let y = 0; //mit let lassen sich variablen danach aendern, ohne Wert deklarieren = undefined
@@ -85,6 +85,7 @@
 			testArray.sort((a,b) => a-b); //sortiert lowest to highest, sort(callback)
 			testArray.sort(function(a,b) {return a === b ? 0 : a < b ? -1 : 1}); //alphabetisch sortieren
 			testArray.every((element, index, array) => typeof(element) === "string"); //testet alle Elemente des Arrays auf gegebene Funktion und returned true/false
+			testArray.some(function(element, index, array) {return element > 0}); //returned true/false wenn eins der Elemente auf gegebene Funktion
 			console.log("testArray", testArray);
 		/* --- Objekt Methoden --- */
 			const testObject = {_type:"Fiat", _color:"white", engineNoise() {console.log("brumm")}, get Type () {return this._type}, set Type(str){this._type = str},}; //Object, Arrow Functions in Objekten binden den this Befehl an die Funktion, property names = keys
@@ -137,6 +138,9 @@
 		const arrowFunction4 = uebergabe => uebergabe + uebergabe; //return ist hier schon inkludiert
 		const arrowFunction5 = uebergabe => (uebergabe + "mehr"); //Implicit Return, return ist inkludiert
 		const arrowFunction6 = ({name, age, location}) => {} //Destructuring Assignment um Objekte als Funktion Parameter zu übergeben
+		function unCurried(x,y) {return x+y}; function curried(x) {return function(y) {return x+y;}} //arity einer Funktion = Anzahl der benötigten Argumente, Currying = Eine Funktion mit N arity in N Funktionen mit 1 arity konvertieren
+		const partialApplication = unCurried.bind(this, 5); partialApplication(3); //x ist offen und wird später vergeben, y wird sofort mit 5 belegt = ergibt 8
+
 
 
 
@@ -224,7 +228,7 @@
 		statt CSS class muss className verwendet werden (wird als class gerendert)
 		mit {} kann javascript in jsx verwendet werden
 			- bei <h1 style={{color:'red'}}></h1> wird erst angegeben dass es sich um js handelt und danach das es um ein js object literal geht
-		Kein if in JSX möglich
+		Kein if in JSX möglich, stattdessen {testBool && <br>} verwenden
 	
 	
 	-------- Ausgabe--------
