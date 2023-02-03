@@ -86,6 +86,7 @@
 			testArray.sort(function(a,b) {return a === b ? 0 : a < b ? -1 : 1}); //alphabetisch sortieren
 			testArray.every((element, index, array) => typeof(element) === "string"); //testet alle Elemente des Arrays auf gegebene Funktion und returned true/false
 			testArray.some(function(element, index, array) {return element > 0}); //returned true/false wenn eins der Elemente auf gegebene Funktion
+			testArray.includes("testarray 1"); //true/false
 			console.log("testArray", testArray);
 		/* --- Objekt Methoden --- */
 			const testObject = {_type:"Fiat", _color:"white", engineNoise() {console.log("brumm")}, get Type () {return this._type}, set Type(str){this._type = str},}; //Object, Arrow Functions in Objekten binden den this Befehl an die Funktion, property names = keys
@@ -392,7 +393,13 @@
 
 
 		const value2 = "as";
-		console.log("value2 - ", value2 !== "")
+		console.log("value2 - ", value2 !== "");
+
+
+		const testinclude = [{"label": "Platz da","value": "kein placeholder",}];
+		console.log("testinclude", Boolean(testinclude.find(element => element.value === "placeholder")));
+		testinclude.push({label: "Platz da2", value: "kein placeholder"})
+		console.log("testinclude", testinclude);
 
 
 	</script>
@@ -491,6 +498,36 @@
 		<option value="test3">test3</option>
 		<option value="test4">test4</option>
 	</select>
+
+	<div id="vonchatgpt">
+		<h1>Witze von ChatGPT</h1>
+		<ul>
+			<script>
+				const url = "https://jokeapi.dev/joke/Any";
+
+				function getJoke() {
+				    const params = {
+				        type: 'twopart',
+				        lang: 'de'
+				    }
+				    const queryString = new URLSearchParams(params).toString()
+				    fetch(`${url}?${queryString}`)
+				    .then((response) => response.json())
+				    .then((data) => {
+				        const joke = data.setup + " " + data.delivery;
+				        vonchatgpt.insertAdjacentHTML('afterend', `<li>${joke}</li>`);
+				        //document.getElementById('vonchatgpt').innerHTML = joke;
+				        console.log("Joke: ", joke);
+				        // you could use any social media api or script to post the message
+				    })
+				    .catch((error) => {
+				        console.error('Error:', error);
+				    });
+				}
+				setInterval(getJoke, 50000); // will execute every 10 minutes
+			</script>
+		</ul>
+	</div>
 
 </body>
 </html>
