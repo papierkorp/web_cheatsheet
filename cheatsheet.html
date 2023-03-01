@@ -75,7 +75,7 @@
 			nestedObjectArray.find(x => x.color === "green"); //findet nach Objekte Werte in Arrays
 			testArray.push("ganz hinten");testArray.unshift("ganz vorne");  //added ganze vorne / ganz hinten
 			testArray.pop(); testArray.shift() //removed + return letztes/erstes Element
-			testArray.splice(1, 1, "testarray 1 neu"); //splice(startindex, anzahl) = removed die angegeben werte, splice(startindex, anzahl, neuesitem1, neuesitem2) = removed + added neue werte
+			testArray.splice(1, 1, "testarray 1 neu"); //splice(startindex, anzahl) = removed die angegeben werte, splice(startindex, anzahl, neuesitem1, neuesitem2) = removed + added neue werte, mit testArray.indexOf("testarray 1") kombinieren
 			testArray.slice(0, 3); //slice(startindex, endindex), Wert wird extrahiert und returned, arrneu=arr.slice() ist eine kopie
 			testArray.indexOf("testarray 2"); //wenn kein index gefunden wird = -1
 			testArray.forEach(element => console.log("for each in testArray: " + element)); //Iterator Methode fuer Arrays, geht jedes Element durch
@@ -91,6 +91,8 @@
 		/* --- Objekt Methoden --- */
 			const testObject = {_type:"Fiat", _color:"white", engineNoise() {console.log("brumm")}, get Type () {return this._type}, set Type(str){this._type = str},}; //Object, Arrow Functions in Objekten binden den this Befehl an die Funktion, property names = keys
 			const zugriff2 = testObject["_type"] || testObject._type ; //2 möglichkeiten um auf objekte zuzugreifen
+			let testObject_copyFlat = Object.assign({}, testObject); //nur erste Ebene wird kopiert, rest wird referenziert
+			let testObject_copyDeep = JSON.parse(JSON.stringify(testObject)); //alles wird kopiert
 			const {_type, _color} = testObject; //per Destructuring Assignment einen Wert aus einem Object extrahieren = const color = testObject.color
 			delete testObject._color; //Propertys von Objekten entfernen
 			testObject.Type = "BMW"; //eigenen Object Setter verwenden
@@ -318,9 +320,26 @@
 	*/
 
 	</style>
+
+
+
+
+
+<!-- --------------------------------------------------------------------------------------- -->
+<!-- --------------------------------------------------------------------------------------- -->
+<!-- --------------------------------------------------------------------------------------- -->
+<!-- --------------------------------------------------------------------------------------- -->
 <!-- --------------------------------------------------------------------------------------- -->
 <!-- -------------------------------------- Testzeugs -------------------------------------- -->
 <!-- --------------------------------------------------------------------------------------- -->
+<!-- --------------------------------------------------------------------------------------- -->
+<!-- --------------------------------------------------------------------------------------- -->
+<!-- --------------------------------------------------------------------------------------- -->
+<!-- --------------------------------------------------------------------------------------- -->
+
+
+
+
 
 	<h1>Ab hier kein Cheatsheet sondern Testzeugs</h1>
 	<p id="output1"></p>
@@ -400,6 +419,61 @@
 		console.log("testinclude", Boolean(testinclude.find(element => element.value === "placeholder")));
 		testinclude.push({label: "Platz da2", value: "kein placeholder"})
 		console.log("testinclude", testinclude);
+
+
+	const hypotheticalAdressData = [
+	    {
+	      "id": 0,
+	      "title": "ka",
+	      "street": "schillerstraße",
+	      "country": "Deutschland",
+	      "houseNumber": "69",
+	      "city": "Freilassing",
+	      "postalCode": "83395",
+	      "county": "Bavaria"
+	    },
+	    {
+	      "id": 1,
+	      "title": "ka",
+	      "street": "Münchenerstraße",
+	      "country": "Deutschland",
+	      "houseNumber": "3",
+	      "city": "Freilassing",
+	      "postalCode": "83395",
+	      "county": "Bavaria"
+	    },
+	    {
+	      "id": 2,
+	      "title": "ka",
+	      "street": "Münchenerstraße",
+	      "country": "Deutschland",
+	      "houseNumber": "69",
+	      "city": "Freilassing",
+	      "postalCode": "83395",
+	      "county": "Bavaria"
+	    },
+	    {
+	      "id": 3,
+	      "title": "ka",
+	      "street": "teststrasse",
+	      "country": "testland",
+	      "houseNumber": "1337",
+	      "city": "teststadt",
+	      "postalCode": "12345",
+	      "county": "testbezirk"
+	    },
+	];
+
+	const had = (adressData) => {
+		return adressData.map((element) => {
+			console.log(element.postalCode)
+			return element.postalCode
+		})
+	}
+
+	const had2 = hypotheticalAdressData.map
+
+	console.log("had", had(hypotheticalAdressData));
 
 
 	</script>
@@ -529,5 +603,13 @@
 		</ul>
 	</div>
 
+	<div id="jsontest">
+		<h1>Json Test</h1>
+	</div>
+
+	<script>
+		let myHTML = "<img src='https://flagcdn.com/w20/de.png' alt=''/>";
+		document.getElementById("jsontest").innerHTML = JSON.parse(JSON.stringify(myHTML));
+	</script>
 </body>
 </html>
